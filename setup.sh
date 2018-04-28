@@ -1,4 +1,4 @@
-git clone git@github.com:grant-wade/dotfiles.git ~/.dotfiles
+git clone https://github.com/grant-wade/dotfiles.git
 
 ln -s ~/.dotfiles/zshrc ~/.zshrc
 ln -s ~/.dotfiles/vimrc ~/.vimrc
