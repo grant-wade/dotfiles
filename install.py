@@ -15,12 +15,17 @@ TAG_LINE = 'Custom Dotfile Installer v0.1'
 FILES = [
     ''
 ]
+
+HOME_DIR = os.environ["HOME"]
+
 COMMANDS = [
     'curl -o omz_install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh',
     'sh ./omz_install.sh',
-    'curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim',
-    'curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    'curl -fLo {}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'.format(HOME_DIR),
+    'curl -fLo {}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'.format(HOME_DIR)
 ]
+
+print HOME_DIR
 
 
 def get_input(question, valid):
