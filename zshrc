@@ -91,18 +91,10 @@ source $ZSH/oh-my-zsh.sh
 alias c="clear"
 alias sa="source activate"
 alias sd="source deactivate"
+alias xonsh="/Users/grant/.miniconda3/envs/xonsh/bin/xonsh"
 
 # NVM install directory
 export NVM_DIR="/Users/grant/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-
-export DISPLAY_MAC=`ifconfig en0 | grep "inet " | cut -d " " -f2`:0
-
-function startx() {
-	if [ -z "$(ps -ef|grep XQuartz|grep -v grep)" ] ; then
-	    open -a XQuartz
-        socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
-	fi
-}
