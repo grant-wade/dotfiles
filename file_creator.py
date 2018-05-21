@@ -46,7 +46,7 @@ export NVM_DIR="{0}/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Display login message
-python $HOME/.dotfiles/motd.py
+python {0}/.dotfiles/motd.py
 """.format(HOME_PATH)
 
 
@@ -91,7 +91,7 @@ set swapfile
 set dir=/tmp
 
 " Plugin Config
-let g:python3_host_prog = "{}/.miniconda3/bin/python3"
+let g:python3_host_prog = "{0}/.miniconda3/bin/python3"
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Plugin setup
@@ -100,7 +100,7 @@ call plug#begin()
 " File viewer
 Plug 'scrooloose/nerdtree'
 
-" Completer for {(["'
+" Completer for braces
 Plug 'jiangmiao/auto-pairs'
 
 " Git information 
@@ -111,7 +111,7 @@ Plug 'itchyny/lightline.vim'
 
 " completion engine
 if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete.nvim', {{ 'do': ':UpdateRemotePlugins' }}
 else
   Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
