@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Print where the install will be happening
-print "Have you installed (git, curl and neovim)?"
+printf "Have you installed (git, curl and neovim)?"
 
 # See if user wants to continue
 read -p "Continue? [yn]: " confirm
