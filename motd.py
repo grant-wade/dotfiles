@@ -81,7 +81,7 @@ def display_cpu_usage():
             core_temp += colors.WARNING
         else:
             core_temp += colors.OKGREEN
-        core_temp += chr(round(temp.current)) + '°C' + colors.ENDC
+        core_temp += '{}'.format(round(temp.current)) + '°C' + colors.ENDC
         print('  {}\t{}'.format(temp.label, core_temp))
 
 
