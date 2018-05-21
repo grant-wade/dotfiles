@@ -43,6 +43,7 @@ $SYSTEM_PYTHON $DOTFILES/file_creator.py
 # Link all the needed files
 ln -sf $DOTFILES/zshrc ~/.zshrc
 ln -sf $DOTFILES/vimrc ~/.vimrc
+mkdir -p $HOME/.config/nvim/
 ln -sf $DOTFILES/vimrc ~/.config/nvim/init.vim
 ln -sf $DOTFILES/tmux.conf ~/.tmux.conf
 ln $DOTFILES/gww_custo.zsh-theme ~/.oh-my-zsh/themes/
