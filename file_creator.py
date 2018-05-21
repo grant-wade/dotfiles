@@ -9,7 +9,6 @@
 # ======================== #
 import os
 import sys
-from subprocess import call
 
 
 # ================ #
@@ -41,13 +40,15 @@ alias sd="source deactivate"
 
 # Conda addition to the path
 export PATH="{0}/.miniconda3/bin:$PATH"
-"""
 
-NVM_STR = """
-export NVM_DIR="{}/.nvm"
+export NVM_DIR="{0}/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Display login message
+python $HOME/.dotfiles/motd.py
 """.format(HOME_PATH)
+
 
 
 VIM_TEMPLATE = """
@@ -89,15 +90,40 @@ syntax on
 set swapfile
 set dir=/tmp
 
+" Plugin Config
+let g:python3_host_prog = "{}/.miniconda3/bin/python3"
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" Plugin setup
 call plug#begin()
 
+" File viewer
 Plug 'scrooloose/nerdtree'
+
+" Completer for {(["'
 Plug 'jiangmiao/auto-pairs'
+
+" Git information 
 Plug 'airblade/vim-gitgutter'
-{}
+
+" Extra Information
+Plug 'itchyny/lightline.vim'
+
+" completion engine
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#enable_at_startup = 1
+
+" Add python jedi to completion
+Plug 'zchee/deoplete-jedi'
 
 call plug#end()
-"""
+""".format(HOME_PATH)
 
 
 def get_input (question, valid):
@@ -125,16 +151,7 @@ def write_file (file_with_path, contents):
 
 def customize_zsh ():
     """Setup a custom zshrc"""
-    val = get_input("Use default zsh config", 'yn')
-    contents = ''
-    # Set the contents of the file from the template
-    if val == 'n': # Custom zshrc
-        contents = ZSH_TEMPLATE.format(HOME_PATH)
-        val = get_input("Include node version manager", 'yn')
-        if val == 'y':
-            contents += NVM_STR
-    elif val == 'y': # Default zshrc
-        contents = ZSH_TEMPLATE.format(HOME_PATH)
+    contents = ZSH_TEMPLATE.format(HOME_PATH)
 
     # Write file to .dotfiles folder
     if write_file(ZSH_PATH, contents):
@@ -147,17 +164,7 @@ def customize_zsh ():
         
 def customize_vim ():
     """Setup a custom vimrc"""
-    val = get_input("Use default vim config", 'yn')
-    contents = ''
-    # Set the contents of the vimrc
-    if val == 'n': # Custom vimrc
-        plugins = ''
-        val = get_input("Include Valloric/YouCompleteMe", 'yn')
-        if val == 'y':
-            plugins += "Plug 'Valloric/YouCompleteMe'\n"
-        contents = VIM_TEMPLATE.format(plugins)
-    elif val == 'y': # Default vimrc
-        contents = VIM_TEMPLATE.format('')
+    contents = VIM_TEMPLATE
     
     # Write new vimrc to .dotfiles folder
     if not write_file(VIM_PATH, contents):
