@@ -26,10 +26,13 @@ bash Miniconda3-latest-Linux-x86_64.sh
 rm Miniconda3-latest-Linux-x86_64.sh
 
 # Install python neovim plugin in custom env
-$HOME/.miniconda3/bin/conda create -n system_env python=3 neovim psutil
+$HOME/.miniconda3/bin/conda create -n system_env python=3
 
 # Python env location
 SYSTEM_PYTHON=$HOME/.miniconda3/envs/system_env/bin/python
+
+# Setup system python
+$SYSTEM_PYTHON -m pip install neovim psutil
 
 # Run setup script
 $SYSTEM_PYTHON $DOTFILES/install.py
