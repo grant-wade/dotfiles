@@ -16,7 +16,7 @@ HOME_DIR = os.environ["HOME"]
 COMMANDS = [
     'curl -o omz_install.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh',
     'bash ./omz_install.sh',
-    'curl -fLo {}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'.format(HOME_DIR),
+    'curl -fLo {}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'.format(HOME_DIR),
     'curl -fLo {}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'.format(HOME_DIR),
     'curl -o nvm_install.sh https://raw.githubusercontent.com/creationix/nvm/master/install.sh',
     'bash ./nvm_install.sh'
