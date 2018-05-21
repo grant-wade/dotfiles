@@ -25,6 +25,8 @@ export ZSH={0}/.oh-my-zsh
 ZSH_THEME="gww_custo"
 export TERM=xterm-256color
 
+SYSTEM_PYTHON=$HOME/.miniconda3/envs/system_env/bin/python
+
 # Plugins
 plugins=(git)
 
@@ -46,7 +48,7 @@ export NVM_DIR="{0}/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Display login message
-python {0}/.dotfiles/motd.py
+$SYSTEM_PYTHON {0}/.dotfiles/motd.py
 """.format(HOME_PATH)
 
 
