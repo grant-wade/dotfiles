@@ -92,7 +92,12 @@ def display_cpu_usage():
         print("No Processor information found")
         return
     print("Processor Information:")
-    print("  Device\tTemp")
+
+    cols = 1
+    curr = 1
+    if len(temps['coretemp']) > 2:
+        cols = 2
+
     for temp in temps['coretemp']:
         if 'Core' not in temp.label:
             continue
@@ -102,7 +107,11 @@ def display_cpu_usage():
         else:
             core_temp += colors.OKGREEN
         core_temp += '{}'.format(round(temp.current)) + '°C' + colors.ENDC
-        print('  {}\t{}'.format(temp.label, core_temp))
+        print('  {}\t{}'.format(temp.label, core_temp), end='')
+        curr += 1
+        if curr == cols:
+            curr = 1
+            print()
 
 
 @clear_space
