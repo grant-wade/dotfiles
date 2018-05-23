@@ -42,7 +42,7 @@ def pretty_bar(percent, length):
     bar = '{}'.format(start_color)
     added_end_color = False
     for i in range(length):
-        if (i / length) * 100 >= percent and added_end_color == False:
+        if int((i / length) * 100) >= int(percent) and added_end_color == False:
             bar += end_color
             added_end_color = True
         bar += '='
