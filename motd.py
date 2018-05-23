@@ -21,6 +21,8 @@ class colors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
+    BGGREEN = '\033[102m'
+    BGRED = '\033[101m'
     RED = '\033[91m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
@@ -101,13 +103,12 @@ def display_cpu_usage():
     for temp in temps['coretemp']:
         if 'Core' not in temp.label:
             continue
-        core_temp = ''
+        msg = '  {0}{2} {3}°C{1}'
         if temp.current > temp.high / 2:
-            core_temp += colors.WARNING
+            msg = msg.format(colors.BGRED, colors.ENDC, temp.label, round(temp.current))
         else:
-            core_temp += colors.OKGREEN
-        core_temp += '{}'.format(round(temp.current)) + '°C' + colors.ENDC
-        print('  {}\t{}'.format(temp.label, core_temp), end='')
+            msg = msg.format(colors.BGGREEN, colors.ENDC, temp.label, round(temp.current))
+        print(msg, end='')
         curr += 1
         if curr == cols:
             curr = 0
