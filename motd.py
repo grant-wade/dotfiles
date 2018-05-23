@@ -94,7 +94,7 @@ def display_cpu_usage():
     print("Processor Information:")
 
     cols = 1
-    curr = 1
+    curr = 0
     if len(temps['coretemp']) > 2:
         cols = 2
 
@@ -110,7 +110,7 @@ def display_cpu_usage():
         print('  {}\t{}'.format(temp.label, core_temp), end='')
         curr += 1
         if curr == cols:
-            curr = 1
+            curr = 0
             print()
 
 
