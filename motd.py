@@ -20,7 +20,7 @@ import psutil
 class colors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
+    OKGREEN = '\033[42m'
     BGGREEN = '\033[102m'
     BGRED = '\033[101m'
     RED = '\033[91m'
@@ -28,6 +28,7 @@ class colors:
     FAIL = '\033[91m'
     ENDC = '\033[0m'
     BOLD = '\033[1m'
+    BLACK = '\033[30m'
     UNDERLINE = '\033[4m'
 
 
@@ -44,10 +45,11 @@ def pretty_bar(percent, length):
     bar = '{}'.format(start_color)
     added_end_color = False
     for i in range(length):
-        if int((i / length) * 100) >= int(percent) and added_end_color == False:
+        if (i / length) * 100 > percent and added_end_color == False:
             bar += end_color
             added_end_color = True
         bar += '='
+    bar += end_color
     return '[{}]'.format(bar)
 
 
@@ -103,11 +105,11 @@ def display_cpu_usage():
     for temp in temps['coretemp']:
         if 'Core' not in temp.label:
             continue
-        msg = '  {0}{2} {3}°C{1}'
+        msg = '  {0} {4}{2} {3}°C {1}'
         if temp.current > temp.high / 2:
-            msg = msg.format(colors.BGRED, colors.ENDC, temp.label, round(temp.current))
+            msg = msg.format(colors.BGRED, colors.ENDC, temp.label, round(temp.current), colors.BLACK)
         else:
-            msg = msg.format(colors.BGGREEN, colors.ENDC, temp.label, round(temp.current))
+            msg = msg.format(colors.BGGREEN, colors.ENDC, temp.label, round(temp.current), colors.BLACK)
         print(msg, end='')
         curr += 1
         if curr == cols:
@@ -122,6 +124,8 @@ def display_disk_usage():
     partitions = psutil.disk_partitions()
     print("Filesystem\tSize\tUsed\tUse%\tMount")
     for partition in partitions:
+        if 'snap' in partition.mountpoint:
+            continue
         dev = partition.device
         info = psutil.disk_usage(partition.mountpoint)
         usage = info.percent
