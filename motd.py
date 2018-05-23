@@ -42,7 +42,7 @@ def pretty_bar(percent, length):
     bar = '{}'.format(start_color)
     added_end_color = False
     for i in range(length):
-        if (i / length) * 100 > percent and added_end_color == False:
+        if (i / length) * 100 >= percent and added_end_color == False:
             bar += end_color
             added_end_color = True
         bar += '='
@@ -86,7 +86,11 @@ def display_memory_usage():
 
 @clear_space
 def display_cpu_usage():
-    temps = psutil.sensors_temperatures()
+    try:
+        temps = psutil.sensors_temperatures()
+    except:
+        print("No Processor information found")
+        return
     print("Processor Information:")
     print("  Device\tTemp")
     for temp in temps['coretemp']:

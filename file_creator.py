@@ -26,6 +26,7 @@ ZSH_THEME="gww_custo"
 export TERM=xterm-256color
 
 export SYSTEM_PYTHON=$HOME/.miniconda3/envs/system_env/bin/python
+SYSTEM_PYTHON=$HOME/.miniconda3/envs/system_env/bin/python
 
 # Plugins
 plugins=(git)
@@ -48,8 +49,6 @@ export NVM_DIR="{0}/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Display login message
-$SYSTEM_PYTHON {0}/.dotfiles/motd.py
 """.format(HOME_PATH)
 
 
@@ -164,6 +163,11 @@ def write_file (file_with_path, contents):
 def customize_zsh ():
     """Setup a custom zshrc"""
     contents = ZSH_TEMPLATE.format(HOME_PATH)
+    val = get_input('Have motd', 'yn')
+    if val == 'y':
+        contents += """
+# Display login message
+$SYSTEM_PYTHON {0}/.dotfiles/motd.py""".format(HOME_PATH)
 
     # Write file to .dotfiles folder
     if write_file(ZSH_PATH, contents):
