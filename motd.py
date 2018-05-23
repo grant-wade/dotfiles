@@ -1,3 +1,15 @@
+"""Displays system information with motd formating"""
+
+# ======================== #
+# Standard Library Imports #
+# ======================== #
+import os
+import json
+
+
+# =================== #
+# Third Party Imports #
+# =================== #
 import psutil
 
 
@@ -9,6 +21,7 @@ class colors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
+    RED = '\033[91m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
@@ -21,6 +34,7 @@ class colors:
 # ===================================== #
 
 def pretty_bar(percent, length):
+    """Creates a colored percent bar"""
     start_color = colors.OKBLUE
     end_color = colors.ENDC
     if percent > 70:
@@ -36,10 +50,12 @@ def pretty_bar(percent, length):
 
 
 def bytes_to_gigs(byte_count):
+    """Converts bytes to gigabytes"""
     return byte_count / 1.07e9
 
 
 def clear_space(func):
+    """Wrapper for printing extra space"""
     def wrapper():
         print()
         func()
@@ -112,11 +128,12 @@ def display_network_information():
         address = addrs[interface][0].address
         if ':' in address:
             continue
+        elif 'lo' in interface:
+            continue
         data_in = bytes_to_gigs(stats[interface].bytes_recv)
         data_out = bytes_to_gigs(stats[interface].bytes_sent)
         print("{}\t\t{}\t{:.2f}G\t\t{:.2f}G".format(
             interface, address, data_in, data_out))
-
 
 
 @clear_space
@@ -129,22 +146,51 @@ def display_battery_information():
     pass
 
 
+@clear_space
+def display_docker_information():
+    pass
+
+
 def display_banner():
-    print("""
+    print("""{}
     ____            ____                                 __ 
    / __ \___  _____/ __/___  _________ ___  ____ _____  / /_
   / /_/ / _ \/ ___/ /_/ __ \/ ___/ __ `__ \/ __ `/ __ \/ __/
  / ____/  __/ /  / __/ /_/ / /  / / / / / / /_/ / / / / /_  
 /_/    \___/_/  /_/  \____/_/  /_/ /_/ /_/\__,_/_/ /_/\__/  
-            """)
+            {}""".format(colors.RED, colors.ENDC))
+
+
+# ================ #
+# Global Variables #
+# ================ #
+operations = {
+    'cpu': display_cpu_usage,
+    'network': display_network_information,
+    'memory': display_memory_usage,
+    'disk': display_disk_usage,
+    'docker': display_docker_information
+}
 
 
 def start():
+    with open('{}/.dotfiles/motd.json'.format(os.environ['HOME']), 'r') as data:
+        try:
+            data = json.load(data)
+        except AttributeError:
+            print("Config not found! Run motd-config to configure")
+            exit(1)
+
+    # Get functions to use
+    disp_order = data['disp_order']
+
+    # Display banner
     display_banner()
-    display_cpu_usage()
-    display_network_information()
-    display_memory_usage()
-    display_disk_usage()
+
+    # Call all configured functions
+    for curr in disp_order:
+        operations[curr]()
+
 
 
 if __name__ == '__main__':

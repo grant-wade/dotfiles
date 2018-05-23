@@ -25,7 +25,7 @@ export ZSH={0}/.oh-my-zsh
 ZSH_THEME="gww_custo"
 export TERM=xterm-256color
 
-SYSTEM_PYTHON=$HOME/.miniconda3/envs/system_env/bin/python
+export SYSTEM_PYTHON=$HOME/.miniconda3/envs/system_env/bin/python
 
 # Plugins
 plugins=(git)
@@ -39,9 +39,10 @@ alias c="clear"
 # Conda source activator
 alias sa="source activate"
 alias sd="source deactivate"
+alias spy="$SYSTEM_PYTHON"
 
-# Conda addition to the path
-export PATH="{0}/.miniconda3/bin:$PATH"
+# Conda and custom binaries to path
+export PATH="{0}/.dotfiles/bin:{0}/.miniconda3/bin:$PATH"
 
 export NVM_DIR="{0}/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -73,6 +74,15 @@ nmap <leader>f :NERDTreeToggle<cr>
 nmap <leader>c I//<Esc>
 nmap <leader>v :vsplit
 nmap <leader>h :split
+nmap <leader>1 1gt
+nmap <leader>2 2gt
+nmap <leader>3 3gt
+nmap <leader>4 4gt
+nmap <leader>5 5gt
+nmap <leader>6 6gt
+nmap <leader>7 7gt
+nmap <leader>8 8gt
+nmap <leader>9 9gt
 
 " Tab Settings
 set tabstop=4
@@ -93,7 +103,7 @@ set swapfile
 set dir=/tmp
 
 " Plugin Config
-let g:python3_host_prog = "{0}/.miniconda3/bin/python3"
+let g:python3_host_prog = "{0}/.miniconda3/envs/system_env/bin/python3"
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Plugin setup

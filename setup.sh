@@ -20,7 +20,7 @@ DOTFILES=$HOME/.dotfiles
 curl -O https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 
 # Install miniconda
-bash Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh -b -f p $HOME/.miniconda3
 
 # Remove miniconda installer
 rm Miniconda3-latest-Linux-x86_64.sh
@@ -40,13 +40,14 @@ $SYSTEM_PYTHON $DOTFILES/install.py
 # Customize dotfiles
 $SYSTEM_PYTHON $DOTFILES/file_creator.py
 
+# Make all needed directories
+mkdir -p $HOME/.config/nvim/
+
 # Link all the needed files
 ln -sf $DOTFILES/zshrc ~/.zshrc
 ln -sf $DOTFILES/vimrc ~/.vimrc
-mkdir -p $HOME/.config/nvim/
 ln -sf $DOTFILES/vimrc ~/.config/nvim/init.vim
 ln -sf $DOTFILES/tmux.conf ~/.tmux.conf
-ln $DOTFILES/gww_custo.zsh-theme ~/.oh-my-zsh/themes/
+ln -f  $DOTFILES/gww_custo.zsh-theme ~/.oh-my-zsh/themes/
 
-# Start new prompt
-zsh
+echo "Install complete your system is now configured"

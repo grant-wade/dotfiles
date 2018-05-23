@@ -1,0 +1,8 @@
+{
+    "disp_order": [
+        "cpu",
+        "memory",
+        "network",
+        "disk"
+    ]
+}
