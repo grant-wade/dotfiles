@@ -10,6 +10,7 @@
 import os
 import sys
 
+from subprocess import Popen, PIPE
 
 # ================ #
 # Global Variables #
@@ -18,6 +19,21 @@ HOME_PATH = os.environ['HOME']
 DOTFILES_PATH = HOME_PATH + '/.dotfiles/'
 ZSH_PATH = DOTFILES_PATH + 'zshrc'
 VIM_PATH = DOTFILES_PATH + 'vimrc'
+OS = sys.platform
+CLANG_PATH = ''
+print(OS)
+if OS.lower() == 'darwin':
+    process = Popen(['mdfind', '-name', 'libclang.dylib'], stdout=PIPE)
+    out, _ = process.communicate()
+    print(ascii(out.decode('utf-8')))
+    CLANG_PATH = out.decode('utf-8').strip()
+else:
+    process = Popen(['find', '/', '-name', 'libclang.so'], stdout=PIPE)
+    out, _ = process.communicate()
+    print(ascii(out.decode('utf-8')))
+    CLANG_PATH = out.decode('utf-8').strip()
+
+print(CLANG_PATH)
 
 ZSH_TEMPLATE = """
 # zsh variables
@@ -102,8 +118,14 @@ set swapfile
 set dir=/tmp
 
 " Plugin Config
-let g:python3_host_prog = "{0}/.miniconda3/envs/system_env/bin/python3"
+let g:python3_host_prog = "{HOME}/.miniconda3/envs/system_env/bin/python3"
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" Configure Ale linting
+let g:ale_lint_on_text_changed = 'never'
+
+" deoplete-clang options
+let g:deoplete#sources#clang#libclang_path = "{CLANG}"
 
 " Plugin setup
 call plug#begin()
@@ -120,6 +142,9 @@ Plug 'airblade/vim-gitgutter'
 " Extra Information
 Plug 'itchyny/lightline.vim'
 
+" Ale Linting
+Plug 'w0rp/ale'
+
 " completion engine
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', {{ 'do': ':UpdateRemotePlugins' }}
@@ -132,9 +157,10 @@ let g:deoplete#enable_at_startup = 1
 
 " Add python jedi to completion
 Plug 'zchee/deoplete-jedi'
+Plug 'zchee/deoplete-clang'
 
 call plug#end()
-""".format(HOME_PATH)
+""".format(HOME=HOME_PATH, CLANG=CLANG_PATH)
 
 
 def get_input (question, valid):
